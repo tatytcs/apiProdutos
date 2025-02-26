@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="C:\coti_2025\workspace\apiProdutos"/>
 			<item value="C:\coti_java_2025\workspace\apiProdutos"/>
 			<item value="C:\Users\Tatiane\git\apiProdutos"/>
 		</list>

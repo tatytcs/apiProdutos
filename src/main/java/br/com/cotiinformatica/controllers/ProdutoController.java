@@ -21,65 +21,70 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/produtos")
 public class ProdutoController {
-	
+
 	@Operation(summary = "Serviço para cadastrar produto.")
 	@PostMapping("cadastrar")
 	// @RequestBody: utilizado para receber os dados do corpo da requisição
 	// @Valid: utilizado para validar os dados do corpo da requisição
 	public String cadastrar(@RequestBody @Valid ProdutoRequestDto request) {
-		
+
 		var produto = new Produto();
-		
+
 		// Capturando os dados da requisição e atribuindo ao objeto
 		produto.setId(UUID.randomUUID());
 		produto.setNome(request.getNome());
 		produto.setPreco(request.getPreco());
 		produto.setQuantidade(request.getQuantidade());
-		
+
 		var produtoRepository = new ProdutoRepository();
 		produtoRepository.create(produto, request.getCategoriaId());
-		
+
 		// Retornando uma mensagem de sucesso
 		return "Produto cadastrado com sucesso.";
-		
+
 	}
-	
+
 	@Operation(summary = "Serviço para atualizar produto.")
 	@PutMapping("atualizar/{id}")
-	public String atualizar(@PathVariable UUID id,@RequestBody @Valid ProdutoRequestDto request) {
-        
+	public String atualizar(@PathVariable UUID id, @RequestBody @Valid ProdutoRequestDto request) {
+
 		var produto = new Produto();
 		// Capturando os dados da requisição e atribuindo ao objeto
 		produto.setId(id);
 		produto.setNome(request.getNome());
 		produto.setPreco(request.getPreco());
 		produto.setQuantidade(request.getQuantidade());
-		
+
 		var produtoRepository = new ProdutoRepository();
 		produtoRepository.update(produto, request.getCategoriaId());
-		
-		return "Produto atualizado com sucesso.";		
-		
+
+		return "Produto atualizado com sucesso.";
+
 	}
-	
+
 	@Operation(summary = "Serviço para excluir produto.")
 	@DeleteMapping("excluir/{id}")
 	public String excluir(@PathVariable UUID id) {
 
 		var produtoRepository = new ProdutoRepository();
 		produtoRepository.delete(id);
-		
+
 		return "Produto excluído com sucesso.";
 	}
-		
 
 	@Operation(summary = "Serviço para consultar produtos.")
 	@GetMapping("consultar/{nome}")
 	public List<Produto> consultar(@PathVariable String nome) {
-		
+
 		var produtoRepository = new ProdutoRepository();
 		return produtoRepository.findAll(nome);
-    }
 	}
 
-
+	@Operation(summary = "Serviço para consultar 1 produto através do ID.")
+	@GetMapping("obter/{id}")
+	public Produto obter(@PathVariable UUID id) {
+		// consultar 1 produto no banco de dados através do ID
+		var produtoRepository = new ProdutoRepository();
+		return produtoRepository.findById(id);
+	}
+}
